@@ -26,6 +26,8 @@ const Banner = ({ mediaInfo }) => {
       <div className="relative mx-auto flex max-w-screen-lg gap-6 px-6 py-10 text-white lg:gap-8">
         <div className="flex-1">
           <img
+            width={600}
+            height={900}
             className=""
             src={`https://image.tmdb.org/t/p/original${mediaInfo.poster_path}`}
             alt=""

@@ -1,25 +1,23 @@
 import PaginateIndicator from "./PaginateIndicator";
 import Movie from "./Movie";
 import { useEffect, useState } from "react";
+import useFetch from "@hooks/useFetch";
 
 const FeatureMovie = () => {
-  const [movies, setMovie] = useState([]);
   const [activeMovieId, setActiveMovieId] = useState();
-  useEffect(() => {
-    fetch("https://api.themoviedb.org/3/movie/popular", {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYmY5N2JhY2IwNzU4ZjM1NjIxZmI5Zjg0YzQyZjJmZCIsIm5iZiI6MTczOTExNTU4OS4zNzEsInN1YiI6IjY3YThjYzQ1MDZiZDBjZWZhNmUwNmViZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rqNNL0KS8_p6E8bdwcHPwTyQBxR49_GfkuTpfzNXGOQ`,
-      },
-    }).then(async (res) => {
-      const data = await res.json();
-      const popularMovies = data.results.slice(0, 4);
-      setMovie(popularMovies);
-      setActiveMovieId(popularMovies[0].id);
-    });
-  }, []);
 
+  const { data: popularMoviesResponse } = useFetch({
+    url: `/movie/popular`,
+  });
+
+  const movies = (popularMoviesResponse.results || []).slice(0, 4);
+
+  useEffect(() => {
+    if (movies[0]?.id) {
+      setActiveMovieId(movies[0].id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(movies)]);
   return (
     <div className="relative">
       {movies

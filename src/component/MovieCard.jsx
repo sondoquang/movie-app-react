@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import CircularProgressBar from "./CircularProgressBar";
+import ImageComponent from "./ImageComponent";
 
 const MovieCard = ({
   movieId,
@@ -21,11 +22,11 @@ const MovieCard = ({
             TV Show
           </p>
         )}
-
-        <img
-          className="rounded-lg"
+        <ImageComponent
+          className="w-full rounded-lg"
+          width={210}
+          height={300}
           src={`https://image.tmdb.org/t/p/original${poster}`}
-          alt=""
         />
 
         <div className="relative -top-[1.5vw] px-4">
