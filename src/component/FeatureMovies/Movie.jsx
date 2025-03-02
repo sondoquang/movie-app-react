@@ -1,13 +1,22 @@
+import ImageComponent from "@component/ImageComponent";
+import { useModelContext } from "@contexts/ModelProvider";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 const Movie = (props) => {
   const {
-    data: { backdrop_path, title, release_date, overview },
+    data: { id, backdrop_path, title, release_date, overview },
+    trailerVideoKey,
   } = props;
+
+  const { openPopup } = useModelContext();
+
   return (
     <div>
-      <img
+      <ImageComponent
+        width={900}
+        height={500}
         src={`https://image.tmdb.org/t/p/original${backdrop_path}`}
         className="aspect-video w-full brightness-50"
       />
@@ -26,13 +35,26 @@ const Movie = (props) => {
           </div>
         </div>
         <div className="mt-4">
-          <button className="cursor-pointer rounded bg-white px-4 py-2 text-[10px] text-black lg:text-lg">
+          <button
+            onClick={() => {
+              openPopup(
+                <iframe
+                  title="trailer"
+                  src={`https://www.youtube.com/embed/${trailerVideoKey}`}
+                  className="aspect-video w-[50vw]"
+                />,
+              );
+            }}
+            className="cursor-pointer rounded bg-white px-4 py-2 text-[10px] text-black lg:text-lg"
+          >
             <FontAwesomeIcon icon={faPlay} />
             Trailer
           </button>
-          <button className="ms-2 cursor-pointer rounded bg-slate-300/35 px-4 py-2 text-[10px] lg:text-lg">
-            View Detail
-          </button>
+          <Link to={`/movie/${id}`}>
+            <button className="ms-2 cursor-pointer rounded bg-slate-300/35 px-4 py-2 text-[10px] lg:text-lg">
+              View Detail
+            </button>
+          </Link>
         </div>
       </div>
     </div>

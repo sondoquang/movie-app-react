@@ -10,7 +10,7 @@ const MovieDetail = () => {
   const { id } = useParams();
 
   const { isLoading, data: movieInfo } = useFetch({
-    url: `/movie/${id}?append_to_response=release_dates,credits`,
+    url: `/movie/${id}?append_to_response=release_dates,credits,videos`,
   });
 
   const { isLoading: isRelatedMovieListLoading, data: relatedMoviesResponse } =
@@ -18,14 +18,42 @@ const MovieDetail = () => {
       url: `/movie/${id}/recommendations`,
     });
 
+  console.log(relatedMoviesResponse.results);
+
   const relatedMovies = relatedMoviesResponse.results || [];
 
   if (isLoading || isRelatedMovieListLoading) {
     return <Loading />;
   }
+
+  const certification = (
+    (movieInfo.release_dates?.results || []).find(
+      (result) => result.iso_3166_1 === "US",
+    )?.release_dates || []
+  ).find((releaseDate) => releaseDate.certification)?.certification;
+
+  const crews = (movieInfo.credits?.crew || [])
+    .filter((crew) => ["Director", "Screenplay", "Writer"].includes(crew.job))
+    .map((crew) => ({ id: crew.id, job: crew.job, name: crew.name }));
+
   return (
     <div>
-      <Banner mediaInfo={movieInfo} />
+      <Banner
+        title={movieInfo.title}
+        backdropPath={movieInfo.backdrop_path}
+        posterPath={movieInfo.poster_path}
+        releaseDate={movieInfo.release_date}
+        genres={movieInfo.genres}
+        point={movieInfo.vote_average}
+        certification={certification}
+        crews={crews}
+        overview={movieInfo.overview}
+        trailerVideoKey={
+          (movieInfo.videos?.results || []).find(
+            (movie) => movie.type === "Trailer" && movie.site === "YouTube",
+          )?.key
+        }
+      />
       <div className="bg-black text-white">
         <div className="mx-auto flex max-w-screen-lg gap-6 px-6 py-10 sm:gap-8">
           <div className="flex-[2] text-[1.2vw]">
