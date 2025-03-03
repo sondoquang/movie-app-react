@@ -27,7 +27,9 @@ const Banner = ({
         width={740}
         height={370}
         className="absolute inset-0 aspect-video w-full brightness-[.2]"
-        src={`https://image.tmdb.org/t/p/original${backdropPath}`}
+        src={
+          backdropPath && `https://image.tmdb.org/t/p/original${backdropPath}`
+        }
         alt=""
       />
       <div className="relative mx-auto flex max-w-screen-lg gap-6 px-6 py-10 text-white lg:gap-8">
@@ -36,7 +38,9 @@ const Banner = ({
             width={600}
             height={900}
             className=""
-            src={`https://image.tmdb.org/t/p/original${posterPath}`}
+            src={
+              posterPath && `https://image.tmdb.org/t/p/original${posterPath}`
+            }
           />
         </div>
         <div className="flex-[2] text-[1.2vw]">

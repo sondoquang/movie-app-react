@@ -13,7 +13,7 @@ const ActorList = ({ actors = [] }) => {
         {currentActors.map((actor) => (
           <ActorInfo
             key={actor.id}
-            // id={actor.id}
+            id={actor.id}
             name={actor.name}
             character={actor.character}
             profilePath={actor.profile_path}

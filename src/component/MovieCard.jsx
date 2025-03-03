@@ -26,7 +26,7 @@ const MovieCard = ({
           className="w-full rounded-lg"
           width={210}
           height={300}
-          src={`https://image.tmdb.org/t/p/original${poster}`}
+          src={poster && `https://image.tmdb.org/t/p/original${poster}`}
         />
 
         <div className="relative -top-[1.5vw] px-4">
